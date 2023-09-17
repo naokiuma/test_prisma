@@ -1,0 +1,123 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model categories {
+  category_id BigInt @id @default(autoincrement()) @db.UnsignedBigInt
+  name        String @db.VarChar(255)
+  color       String @db.VarChar(255)
+  count       Int
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model comment_images_bk {
+  comment_images_id BigInt    @id @default(autoincrement()) @db.UnsignedBigInt
+  comment_id        BigInt    @db.UnsignedBigInt
+  image_file_name   String    @db.VarChar(255)
+  created_at        DateTime? @db.Timestamp(0)
+  updated_at        DateTime? @db.Timestamp(0)
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model comments {
+  comment_id BigInt    @id @default(autoincrement()) @db.UnsignedBigInt
+  topic_id   BigInt    @db.UnsignedBigInt
+  user_id    BigInt    @db.UnsignedBigInt
+  name       String    @default("名無しさん") @db.VarChar(255)
+  text       String    @db.VarChar(255)
+  created_at DateTime? @db.Timestamp(0)
+  updated_at DateTime? @db.Timestamp(0)
+}
+
+model failed_jobs {
+  id         BigInt   @id @default(autoincrement()) @db.UnsignedBigInt
+  uuid       String   @unique(map: "failed_jobs_uuid_unique") @db.VarChar(255)
+  connection String   @db.Text
+  queue      String   @db.Text
+  payload    String   @db.LongText
+  exception  String   @db.LongText
+  failed_at  DateTime @default(now()) @db.Timestamp(0)
+}
+
+model game_images {
+  game_images_id  BigInt    @id @default(autoincrement()) @db.UnsignedBigInt
+  game_id         BigInt    @db.UnsignedBigInt
+  image_file_name String    @db.VarChar(255)
+  created_at      DateTime? @db.Timestamp(0)
+  updated_at      DateTime? @db.Timestamp(0)
+}
+
+model games {
+  id         BigInt    @id @default(autoincrement()) @db.UnsignedBigInt
+  game_name  String    @db.VarChar(255)
+  genres     String    @db.VarChar(255)
+  hard       String    @default("Nintendo Switch") @db.VarChar(255)
+  created_at DateTime? @db.Timestamp(0)
+  updated_at DateTime? @db.Timestamp(0)
+}
+
+model migrations {
+  id        Int    @id @default(autoincrement()) @db.UnsignedInt
+  migration String @db.VarChar(255)
+  batch     Int
+}
+
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
+model password_resets {
+  email      String    @db.VarChar(255)
+  token      String    @db.VarChar(255)
+  created_at DateTime? @db.Timestamp(0)
+
+  @@index([email], map: "password_resets_email_index")
+  @@ignore
+}
+
+model personal_access_tokens {
+  id             BigInt    @id @default(autoincrement()) @db.UnsignedBigInt
+  tokenable_type String    @db.VarChar(255)
+  tokenable_id   BigInt    @db.UnsignedBigInt
+  name           String    @db.VarChar(255)
+  token          String    @unique(map: "personal_access_tokens_token_unique") @db.VarChar(64)
+  abilities      String?   @db.Text
+  last_used_at   DateTime? @db.Timestamp(0)
+  created_at     DateTime? @db.Timestamp(0)
+  updated_at     DateTime? @db.Timestamp(0)
+
+  @@index([tokenable_type, tokenable_id], map: "personal_access_tokens_tokenable_type_tokenable_id_index")
+}
+
+model topic_categories {
+  topic_category_id BigInt @id @default(autoincrement()) @db.UnsignedBigInt
+  topics_id         BigInt @db.UnsignedBigInt
+  categories_id     BigInt @db.UnsignedBigInt
+}
+
+model topics {
+  id             Int       @id @default(autoincrement()) @db.UnsignedInt
+  parent_user_id BigInt?   @db.UnsignedBigInt
+  game_id        String?   @db.VarChar(255)
+  title          String    @db.VarChar(255)
+  body           String    @db.VarChar(255)
+  status         String    @db.VarChar(255)
+  image_path     String?   @db.VarChar(255)
+  created_at     DateTime? @db.Timestamp(0)
+  updated_at     DateTime? @db.Timestamp(0)
+}
+
+model users {
+  id                BigInt    @id @default(autoincrement()) @db.UnsignedBigInt
+  name              String    @db.VarChar(255)
+  user_avatar       String?   @db.VarChar(255)
+  email             String    @unique(map: "users_email_unique") @db.VarChar(255)
+  email_verified_at DateTime? @db.Timestamp(0)
+  password          String    @db.VarChar(255)
+  remember_token    String?   @db.VarChar(100)
+  created_at        DateTime? @db.Timestamp(0)
+  updated_at        DateTime? @db.Timestamp(0)
+}

@@ -43,12 +43,12 @@ async function main() {
 
 
 	//ユニークな値を探す
-	// let user = await prisma.user.findUnique({
-	// 	where: {
-	// 	  id: 3,
-	// 	},
-	// });
-	// console.log(user);
+	let user = await prisma.user.findUnique({
+		where: {
+		  id: 3,
+		},
+	});
+	console.log(user);
 
 	//この場合、nameはユニークではないのでエラー。何気にすごい！
 	// user = await prisma.user.findUnique({
@@ -57,12 +57,12 @@ async function main() {
 	// 	},
 	// });
 
-	let user = await prisma.user.findMany({
-		orderBy: {
-		  id: 'desc',
-		},
-	});
-	console.log(user);
+	// let user = await prisma.user.findMany({
+	// 	orderBy: {
+	// 	  id: 'desc',
+	// 	},
+	// });
+	// console.log(user);
 	
 }
 
